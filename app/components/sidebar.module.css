@@ -1,0 +1,77 @@
+/* components/sidebar.module.css */
+.sidebar {
+  background-color: #0f172a; /* Slate 900 */
+  color: white;
+  height: 100vh;
+  padding: 1rem;
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.expanded { width: 260px; }
+.collapsed { width: 80px; }
+
+.toggleBtn {
+  position: absolute;
+  right: -12px;
+  top: 40px;
+  background-color: #2563eb; /* Blue 600 */
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  background-color: #3b82f6;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #cbd5e1;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  background-color: #1e293b;
+  color: white;
+}
+
+.navText {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
