@@ -42,23 +42,19 @@ export default function LoginPage() {
   };
 
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
+    <div className = "centered-page-div">
         <h1>Login</h1>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '300px' }}>
-            <input 
-              type="username" 
-              placeholder="Username" 
+        <form onSubmit={handleSubmit} className = "login-signup-form">
+            <input placeholder="Username" className = "login-signup-form-item"
               onChange={(e) => setFormData({...formData, username: e.target.value})}
             />
-            <input 
-              type="password" 
-              placeholder="Password" 
+            <input type="password" placeholder="Password" className = "login-signup-form-item"
               onChange={(e) => setFormData({...formData, password: e.target.value})}
             />
-            <button type="submit" style={{ padding: '10px', backgroundColor: 'blue', color: 'white' }}>Sign In</button>
+            <button type="submit">Sign In</button>
         </form>
         <p>Need an account?</p>
-        <a href="/signup"><button type="button" style={{ padding: '10px', cursor: 'pointer' }}>Create account</button></a>
-    </main>
+        <a href="/signup"><button type="button">Create account</button></a>
+    </div>
   );
 }

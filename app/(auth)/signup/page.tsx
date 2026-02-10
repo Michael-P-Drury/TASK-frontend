@@ -47,27 +47,22 @@ export default function SignupPage() {
 
 
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
+    <div className = "centered-page-div">
         <h1>Create Account</h1>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '300px' }}>
-            <input 
-              type="username"
-              placeholder="Username"
+        <form onSubmit={handleSubmit} className = "login-signup-form">
+            <input placeholder="Username" className = "login-signup-form-item"
               onChange={(e) => setFormData({...formData, username: e.target.value})}
             />
-            <input type="password"
-              placeholder="Password"
+            <input type="password" placeholder="Password" className = "login-signup-form-item"
               onChange={(e) => setFormData({...formData, password: e.target.value})}
             />
-            <input
-              type="password"
-              placeholder="Confirm Password"
+            <input type="password" placeholder="Confirm Password" className = "login-signup-form-item"
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
             />
-            <button type="submit" style={{ padding: '10px', backgroundColor: 'blue', color: 'white' }}>Register</button>
+            <button type="submit">Register</button>
         </form>
         <p>Already have an account?</p>
-        <a href="/login"><button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>Login</button></a>
-    </main>
+        <a href="/login"><button type="submit">Login</button></a>
+    </div>
   );
 }

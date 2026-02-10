@@ -1,9 +1,9 @@
 Frontend for TASK applictaion
 
-T - teacher
-A - assistant
-S - success
-K - key
+T - Teacher
+A - Assistant
+S - Side
+K - Kick
 
 ## Getting Started
 
