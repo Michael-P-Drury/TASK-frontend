@@ -8,9 +8,15 @@ export default function ChatPage() {
 
     const router = useRouter()
 
-    const [userFiles, setUserFiles] = useState({ userFilesList: [] });
+    const [supportFilesLoading, setSupportFilesLoading] = useState(true);
 
-    console.log(userFiles)
+    const [outputFilesLoading, setOutputFilesLoading] = useState(true);
+
+    const [userSupportFiles, setUserSupportFiles] = useState({ userSupportFilesList: [] });
+
+    const [userOutputFiles, setUserOutputFiles] = useState({ userOutputFilesList: [] });
+
+    console.log(userSupportFiles)
 
     const [file, setFile] = useState <File | undefined>('ready');
 
@@ -20,9 +26,11 @@ export default function ChatPage() {
           router.push('/login');
         }
 
-        const getWorkingFiles = async () => {
+        const getSupportFiles = async () => {
+
+          setSupportFilesLoading(true);
           try {
-            const response = await fetch('http://127.0.0.1:8000/users/get_working_files', {
+            const response = await fetch('http://127.0.0.1:8000/users/get_support_files', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ jwt_token: jwtToken }),
@@ -31,9 +39,10 @@ export default function ChatPage() {
             const data = await response.json();
 
             if (data.status === 200) {
-              setUserFiles({
-                userFilesList: data.working_files,
+              setUserSupportFiles({
+                userSupportFilesList: data.support_files,
               });
+              setSupportFilesLoading(false);
             }
 
           } catch (error) {
@@ -41,7 +50,32 @@ export default function ChatPage() {
           }
         };
 
-        getWorkingFiles();
+
+        const getOutputFiles = async () => {
+          try {
+            setOutputFilesLoading(true);
+            const response = await fetch('http://127.0.0.1:8000/users/get_output_files', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ jwt_token: jwtToken }),
+            });
+
+            const data = await response.json();
+
+            if (data.status === 200) {
+              setUserOutputFiles({
+                userOutputFilesList: data.output_files,
+              });
+              setOutputFilesLoading(false);
+            }
+
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+        };
+
+        getSupportFiles();
+        getOutputFiles();
 
     }, [router]);
 
@@ -67,7 +101,7 @@ export default function ChatPage() {
       formData.append('jwt_token', jwtToken);
       formData.append('file', file);
 
-      const response = await fetch('http://127.0.0.1:8000/users/upload_working_file', {
+      const response = await fetch('http://127.0.0.1:8000/users/upload_support_file', {
         method: 'POST',
         body: formData,
       });
@@ -85,13 +119,13 @@ export default function ChatPage() {
     }
 
 
-    async function handleFileDelete(delete_filename: string) {
+    async function handleSupportFileDelete(delete_filename: string) {
 
       const jwtToken = Cookies.get('jwt_token') || "";
 
       console.log(delete_filename)
 
-      const response = await fetch('http://127.0.0.1:8000/users/delete_working_file', {
+      const response = await fetch('http://127.0.0.1:8000/users/delete_support_file', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jwt_token: jwtToken, filename: delete_filename }),
@@ -111,26 +145,114 @@ export default function ChatPage() {
     }
 
 
+    async function handleOutputFileDelete(delete_filename: string) {
+
+      const jwtToken = Cookies.get('jwt_token') || "";
+
+      console.log(delete_filename)
+
+      const response = await fetch('http://127.0.0.1:8000/users/delete_output_file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jwt_token: jwtToken, filename: delete_filename }),
+      });
+
+      const data = await response.json();
+
+      location.reload()
+
+      if (data.status == 200) {
+        alert(data.message);
+        location.reload()
+      }
+      else {
+        alert(data.message);
+      }
+    }
+
+    async function handleOutputFileDownload(download_filename: string) {
+
+      const jwtToken = Cookies.get('jwt_token') || "";
+
+      const response = await fetch('http://127.0.0.1:8000/users/download_output_file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jwt_token: jwtToken, filename: download_filename }),
+      });
+
+      const contentType = response.headers.get("content-type");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', download_filename);
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+    }
+
+
     return (
     <div className = "centered-page-div">
-      <h1>User Files</h1>
-      <p>Upload new File:</p>
+
+      <h1 className = "page-header">User Files</h1>
+      
+      <p className = "user-files-subheading">Upload new File:</p>
+
       <form onSubmit={handleFileUploadSubmit}>
-        <input type = "file" onChange = {handleFileUplaod}></input>
-        <button type="submit">Submit File</button>
+        <input  type = "file" onChange = {handleFileUplaod}></input>
+        <button type="submit" className = "general-button">Submit File</button>
       </form>
-      <div>
-        {userFiles.userFilesList.length > 0 ? (
-          userFiles.userFilesList.map((filename, index) => (
-            <div key={index}>
-              <p>{filename}</p>
-              <button onClick={() => handleFileDelete(filename)}>delete file</button>
-            </div>
-          ))
+
+      <div className = "general-page-section">
+        <div className = "centering-div">
+          <p className = "user-files-subheading">Support Files:</p>
+        </div>
+
+        {supportFilesLoading ? (
+          <span className="loader"></span>
         ) : (
-          <p>No user files yet</p>
+          userSupportFiles.userSupportFilesList.length > 0 ? (
+            userSupportFiles.userSupportFilesList.map((filename, index) => (
+              <div key={index} className = "individual-user-file">
+                <p>{filename}</p>
+                <button className = "general-button" onClick={() => handleSupportFileDelete(filename)}>delete file</button>
+              </div>
+            ))
+          ) : (
+            <p>No user support files yet</p>
+          )
         )}
       </div>
+
+      <div className = "general-page-section">
+        <div className = "centering-div">
+          <p className = "user-files-subheading" >Output Files:</p>
+        </div>
+        
+        {outputFilesLoading ? (
+          <span className="loader"></span>
+          ) : (
+            userOutputFiles.userOutputFilesList.length > 0 ? (
+            userOutputFiles.userOutputFilesList.map((filename, index) => (
+              <div key={index} className = "individual-user-file">
+                <p>{filename}</p>
+                <button className = "general-button" onClick={() => handleOutputFileDelete(filename)}>delete file</button>
+                <button className = "general-button" onClick={() => handleOutputFileDownload(filename)}>download file</button>
+              </div>
+            ))
+          ) : (
+            <p>No Output files</p>
+          )
+        )}
+      </div>
+
     </div>
   );
 }
+

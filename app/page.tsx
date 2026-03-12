@@ -12,7 +12,7 @@ export default function ChatPage() {
 
     const [userPrompt, setUserPrompt] = useState('');
 
-    const [chatHistory, setChatHistory] = useState('');
+    const [chatHistory, setChatHistory] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,9 +25,9 @@ export default function ChatPage() {
             const endpoint = (seeFullChatHistory === 'true') ? 'http://127.0.0.1:8000/chat/get_full_chat_history' : 'http://127.0.0.1:8000/chat/get_condensed_chat_history';
             
             const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ jwt_token: jwtToken }),
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ jwt_token: jwtToken }),
             });
 
             const data = await response.json();
@@ -73,7 +73,7 @@ export default function ChatPage() {
 
         setIsLoading(false);
 
-        location.reload()
+        getChatHistory();
         
     };
 
@@ -81,6 +81,7 @@ export default function ChatPage() {
     const handleToggleFullChat = async () => {
         
         const seeFullChatHistory = Cookies.get('seeFullChatHistory');
+
         if (seeFullChatHistory === 'true') {
             Cookies.set('seeFullChatHistory', 'false');
         }
@@ -88,7 +89,7 @@ export default function ChatPage() {
             Cookies.set('seeFullChatHistory', 'true');
         }
         
-        location.reload()
+        getChatHistory();
     };
 
 
@@ -103,22 +104,31 @@ export default function ChatPage() {
 
         const data = await response.json();
 
-        location.reload()
+        getChatHistory();
         
     };
 
     return (
         <div className="centered-page-div">
             <div className="chat-header">
-                <h1>Chat Page</h1>
-                <button onClick={handleClearChat}>Clear Chat</button>
-                <button onClick={handleToggleFullChat}>Toggle Full Chat</button>
+                <h1 className = "page-header">Chat Page</h1>
+                <button className = "general-button" onClick={handleClearChat}>Clear Chat</button>
+                <button className = "general-button" onClick={handleToggleFullChat}>Toggle Full Chat</button>
             </div>
 
             <div className="chat-history">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {chatHistory}
-                </ReactMarkdown>
+                {chatHistory.map((chat, index) => (
+                    <div 
+                        key={index} 
+                        className={`bubble-wrapper ${chat.sender.toUpperCase() === 'USER' ? 'user-align' : 'task-align'}`}
+                    >
+                        <div className={`bubble ${chat.sender.toUpperCase() === 'USER' ? 'user-bubble' : 'task-bubble'}`}>
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {chat.message}
+                            </ReactMarkdown>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <div className="chat-input-div">

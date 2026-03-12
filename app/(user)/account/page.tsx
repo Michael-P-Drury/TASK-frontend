@@ -106,19 +106,20 @@ export default function AccountPage() {
 
   return(
     <div className = "centered-page-div">
-      <h1>Account</h1>
-      <p className = "account-items">Username: {userData.username}</p>
-      <p className = "account-items">Year Group: {userData.yearGroup}</p>
-      <p className = "account-items">Class Context: {userData.classContext}</p>
-      <div className = "account-items">
-        <input type="text" placeholder="Enter number for year group" onChange={(e) => setNewYear(e.target.value)} />
-        <button onClick={handleUpdateYear}>Update Year</button>
+      <h1 className = "page-header">Account</h1>
+      <div className = "general-page-section">
+        <p className = "account-items">Username: {userData.username}</p>
+        <p className = "account-items">Year Group: {userData.yearGroup}</p>
+        <p className = "account-items">Class Context: {userData.classContext}</p>
       </div>
-      <div className = "account-items">
-        <input type="text" placeholder="Enter new class context" onChange={(e) => setClassContext(e.target.value)} />
-        <button onClick={handleUpdateClassContext}>Update Class Context</button>
+
+      <div className = "general-page-section">
+        <input className = "year-group-input" type="text" placeholder="Enter number for year group" onChange={(e) => setNewYear(e.target.value)} />
+        <button onClick={handleUpdateYear} className = "general-button">Update Year</button>
+        <textarea className = "class-context-box" placeholder="Enter new class context:" rows={6} value={newClassContext} onChange={(e) => setClassContext(e.target.value)} />
+        <button onClick={handleUpdateClassContext} className = "general-button">Update Class Context</button>
       </div>
-      <button onClick={() => {Cookies.remove('jwt_token'); router.push('/login');}} className = "account-items"> Logout </button>
+      <button onClick={() => {Cookies.remove('jwt_token'); router.push('/login');}} className = "general-button"> Logout </button>
       <button onClick={handleDeleteAccount} className = "delete-account-button"> DELETE ACCOUNT </button>
     </div>
   );
