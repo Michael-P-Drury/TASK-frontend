@@ -20,15 +20,14 @@ export default function Sidebar() {
 
   return (
     <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : styles.expanded}`}>
-      <button 
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className={styles.toggleBtn}
-      >
+      <button onClick={() => setIsCollapsed(!isCollapsed)} className={styles.toggleBtn}>
         {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
       </button>
 
       <div className={styles.brand}>
-        {!isCollapsed && <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>TASK</span>}
+        {!isCollapsed && <span className = "navbar-title">TASK</span>}
+        {!isCollapsed && <span className="light-spinny"></span>}
+        {isCollapsed && <span className="light-spinny"></span>}
       </div>
 
       <nav className={styles.nav}>

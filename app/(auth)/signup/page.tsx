@@ -48,21 +48,27 @@ export default function SignupPage() {
 
   return (
     <div className = "centered-page-div">
-        <h1>Create Account</h1>
-        <form onSubmit={handleSubmit} className = "login-signup-form">
-            <input placeholder="Username" className = "login-signup-form-item"
-              onChange={(e) => setFormData({...formData, username: e.target.value})}
-            />
-            <input type="password" placeholder="Password" className = "login-signup-form-item"
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-            />
-            <input type="password" placeholder="Confirm Password" className = "login-signup-form-item"
-              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-            />
-            <button type="submit">Register</button>
-        </form>
-        <p>Already have an account?</p>
-        <a href="/login"><button type="submit">Login</button></a>
+        <div className = "logo-wrapper">
+            <span className="login-logo-text">TASK</span>
+            <span className="dark-spinny"></span>
+        </div>
+        <h1 className = "page-header">Create Account</h1>
+        <div className = "login-form-box">
+          <form onSubmit={handleSubmit} className = "login-signup-form">
+              <input placeholder="Username" className = "login-signup-form-item"
+                onChange={(e) => setFormData({...formData, username: e.target.value})}
+              />
+              <input type="password" placeholder="Password" className = "login-signup-form-item"
+                onChange={(e) => setFormData({...formData, password: e.target.value})}
+              />
+              <input type="password" placeholder="Confirm Password" className = "login-signup-form-item"
+                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+              />
+              <button type="submit" className = "general-button">Register</button>
+          </form>
+          <p>Already have an account?</p>
+          <a href="/login"><button type="submit" className = "general-button">Login</button></a>
+        </div>
     </div>
   );
 }
