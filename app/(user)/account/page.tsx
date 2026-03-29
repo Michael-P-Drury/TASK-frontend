@@ -116,6 +116,7 @@ export default function AccountPage() {
       <div className = "general-page-section">
         <input className = "year-group-input" type="text" placeholder="Enter number for year group" onChange={(e) => setNewYear(e.target.value)} />
         <button onClick={handleUpdateYear} className = "general-button">Update Year</button>
+        
         <textarea className = "class-context-box" placeholder="Enter new class context:" rows={6} value={newClassContext} onChange={(e) => setClassContext(e.target.value)} />
         <button onClick={handleUpdateClassContext} className = "general-button">Update Class Context</button>
       </div>

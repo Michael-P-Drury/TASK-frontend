@@ -23,7 +23,7 @@ export default function SignupPage() {
     e.preventDefault()
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      alert("Passwords do not match");
       return;
     }
 
