@@ -18,7 +18,7 @@ export default function ChatPage() {
 
     console.log(userSupportFiles)
 
-    const [file, setFile] = useState <File | undefined>('ready');
+    const [file, setFile] = useState <File | null>(null);
 
     useEffect(() => {
         const jwtToken = Cookies.get('jwt_token');
@@ -179,8 +179,6 @@ export default function ChatPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jwt_token: jwtToken, filename: download_filename }),
       });
-
-      const contentType = response.headers.get("content-type");
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
