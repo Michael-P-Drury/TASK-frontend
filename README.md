@@ -1,11 +1,12 @@
 Frontend for TASK applictaion
 
-T - Teacher
-A - Assistant
-S - Side
-K - Kick
+T - Teaching
 
-## Getting Started
+A - Assistant
+
+S - Side
+
+K - Kick
 
 # To run:
 
